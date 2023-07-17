@@ -311,6 +311,21 @@ class Concat(nn.Module):
     def forward(self, x):
         return torch.cat(x, self.d)
 
+class DoNothing(nn.Module):
+    def __init__(self):
+        super().__init__()
+    def forward(self,x):
+        return x
+    
+class Split(nn.Module):
+    # Split in half a list of tensors along dimension
+    def __init__(self, dimension=1):
+        super().__init__()
+        self.d = dimension
+
+    def forward(self, x):
+        return torch.split(x,x.size(0)//2,dim=0)[self.d] # left tensor for 0(backbone), right tensor for 1(motion)
+
 
 class DetectMultiBackend(nn.Module):
     # YOLOv5 MultiBackend class for python inference on various backends
