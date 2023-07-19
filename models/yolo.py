@@ -330,7 +330,7 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
         elif m is Split:
-            c2 = sum(ch[x] for x in f)
+            c2 = ch[f] // 2
         # TODO: channel, gw, gd
         elif m in {Detect, Segment}:
             args.append([ch[x] for x in f])

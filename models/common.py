@@ -312,7 +312,7 @@ class Concat(nn.Module):
         return torch.cat(x, self.d)
 
 class DoNothing(nn.Module):
-    def __init__(self):
+    def __init__(self,a):
         super().__init__()
     def forward(self,x):
         return x
@@ -324,7 +324,7 @@ class Split(nn.Module):
         self.d = dimension
 
     def forward(self, x):
-        return torch.split(x,x.size(0)//2,dim=0)[self.d] # left tensor for 0(backbone), right tensor for 1(motion)
+        return torch.split(x,x.shape[1]//2,dim=1)[self.d] # left tensor for 0(backbone), right tensor for 1(motion)
 
 
 class DetectMultiBackend(nn.Module):
