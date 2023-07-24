@@ -135,16 +135,16 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
         LOGGER.info(f'Transferred {len(csd)}/{len(model.state_dict())} items from {weights}')  # report
     else:
         model = Model(cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
+        print(model.info(verbose=True))
         if opt.t2_yolov5 == True:
-            print('Merhaba')
-            t_yolo = torch.load('runs/train/t-yolov5/weights/best.pt')
-            s_yolo = torch.load('yolov5s.pt')
-            s_yolo_idx = np.arange(27,37)
-            t_yolo_idx = np.arange(2,26)
+            t_yolo = torch.load("/usr/src/app/runs/train/t-yolov52/weights/best.pt") 
+            s_yolo = torch.load('/usr/src/app/yolov5s.pt')
+            print(t_yolo.get('model').info(verbose=True))
             for i in range(2,26):
-                model.get('model').model[i].load_state_dict(t_yolo.get('model').model[i-2].state_dict())
+                print(i)
+                model.model[i].load_state_dict(t_yolo.get('model').model[i-2].state_dict())
             for i in range(27,37):
-                model.get('model').model[i].load_state_dict(s_yolo.get('model').model[i-27].state_dict())
+                model.model[i].load_state_dict(s_yolo.get('model').model[i-27].state_dict())
             print('Merhaba')
             
     amp = check_amp(model)  # check AMP
