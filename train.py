@@ -135,6 +135,18 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
         LOGGER.info(f'Transferred {len(csd)}/{len(model.state_dict())} items from {weights}')  # report
     else:
         model = Model(cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
+        if opt.t2_yolov5 == True:
+            print('Merhaba')
+            t_yolo = torch.load('runs/train/t-yolov5/weights/best.pt')
+            s_yolo = torch.load('yolov5s.pt')
+            s_yolo_idx = np.arange(27,37)
+            t_yolo_idx = np.arange(2,26)
+            for i in range(2,26):
+                model.get('model').model[i].load_state_dict(t_yolo.get('model').model[i-2].state_dict())
+            for i in range(27,37):
+                model.get('model').model[i].load_state_dict(s_yolo.get('model').model[i-27].state_dict())
+            print('Merhaba')
+            
     amp = check_amp(model)  # check AMP
 
     # Freeze
@@ -475,6 +487,7 @@ def parse_opt(known=False):
     parser.add_argument('--save-period', type=int, default=-1, help='Save checkpoint every x epochs (disabled if < 1)')
     parser.add_argument('--seed', type=int, default=0, help='Global training seed')
     parser.add_argument('--local_rank', type=int, default=-1, help='Automatic DDP Multi-GPU argument, do not modify')
+    parser.add_argument('--t2_yolov5', type=bool,default=False,help='Make it true if you want to train T2-Yolov5 paper.')
 
     # Logger arguments
     parser.add_argument('--entity', default=None, help='Entity')
