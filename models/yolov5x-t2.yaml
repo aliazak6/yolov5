@@ -4,6 +4,8 @@
 nc: 80  # number of classes
 depth_multiple: 1.33  # model depth multiple
 width_multiple: 1.25  # layer channel multiple
+depth_multiple_2: 0.33  # motion stream depth multiple
+width_multiple_2: 0.50  # motion stream width multiple
 anchors:
   - [10,13, 16,30, 33,23]  # P3/8
   - [30,61, 62,45, 59,119]  # P4/16
@@ -59,11 +61,11 @@ head:
    [-1, 1, SPPF, [1024, 5]],  # 36
    #head
    [[19,31], 1, Concat, [1]], 
-   [-1, 1, Conv, [256, 3, 1, 1]], #38
+   [-1, 1, Conv, [512, 3, 2]], #38
    [[22,33], 1, Concat, [1]], 
-   [-1, 1, Conv, [256, 3, 1, 1]], #40
+   [-1, 1, Conv, [512, 3, 2]], #40
    [[25,36], 1, Concat, [1]], 
-   [-1, 1, Conv, [256, 3, 1, 1]], #42
+   [-1, 1, Conv, [512, 3, 2]], #42
    [[38,40,42], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)
   ]
   

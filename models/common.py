@@ -324,7 +324,7 @@ class Split(nn.Module):
         self.d = dimension
 
     def forward(self, x):
-        return torch.split(x,x.shape[1]//2,dim=1)[self.d] # left tensor for 0(backbone), right tensor for 1(motion)
+        return torch.split(x,x.shape[2]//2,dim=2)[self.d] # left tensor for 0(backbone), right tensor for 1(motion)
 
 
 class DetectMultiBackend(nn.Module):
